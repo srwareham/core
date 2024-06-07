@@ -27,9 +27,11 @@ from homeassistant.util import ulid
 
 from .const import (
     CONF_MAX_HISTORY,
+    CONF_KEEP_ALIVE,
     CONF_MODEL,
     CONF_PROMPT,
     DEFAULT_MAX_HISTORY,
+    DEFAULT_KEEP_ALIVE,
     DEFAULT_PROMPT,
     DOMAIN,
     KEEP_ALIVE_FOREVER,
@@ -151,7 +153,7 @@ class OllamaConversationEntity(
                 # Make a copy of the messages because we mutate the list later
                 messages=list(message_history.messages),
                 stream=False,
-                keep_alive=KEEP_ALIVE_FOREVER,
+                keep_alive=settings.get(CONF_KEEP_ALIVE, DEFAULT_KEEP_ALIVE),
             )
         except (ollama.RequestError, ollama.ResponseError) as err:
             _LOGGER.error("Unexpected error talking to Ollama server: %s", err)
