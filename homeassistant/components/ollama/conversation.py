@@ -153,7 +153,8 @@ class OllamaConversationEntity(
                 # Make a copy of the messages because we mutate the list later
                 messages=list(message_history.messages),
                 stream=False,
-                keep_alive=settings.get(CONF_KEEP_ALIVE, DEFAULT_KEEP_ALIVE),
+                # This doesn't allow for -1 or 0. so need to change
+                keep_alive=f"{settings.get(CONF_KEEP_ALIVE, DEFAULT_KEEP_ALIVE)}s",# keep alive requires specifying
             )
         except (ollama.RequestError, ollama.ResponseError) as err:
             _LOGGER.error("Unexpected error talking to Ollama server: %s", err)
